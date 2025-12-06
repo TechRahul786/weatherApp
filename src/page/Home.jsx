@@ -1,6 +1,7 @@
 import { FaWind } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
 import rain from "../assets/heavyrain.png";
+import { FaLocationDot } from "react-icons/fa6";
 const Home = ({ currentData, dayForcast, setSearch }) => {
   const daily = dayForcast.list.filter((item) =>
     item.dt_txt.includes("12:00:00")
@@ -10,6 +11,13 @@ const Home = ({ currentData, dayForcast, setSearch }) => {
     return date.toLocaleDateString("en-US", { weekday: "short" });
   };
 
+  const getCountryName = (code) => {
+  const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+  return regionNames.of(code); 
+};
+
+const fullName = getCountryName(currentData.sys.country);
+
   const searchHandle = (e) =>{
    if(e.key === "Enter"){
     setSearch(e.target.value)
@@ -17,19 +25,23 @@ const Home = ({ currentData, dayForcast, setSearch }) => {
   }
 
   return (
-    <div className="flex flex-col md:justify-center items-center bg-radial-[at_50%_50%] from-white/20 to-black h-fit md:h-full w-full rounded-3xl text-white p-10">
-    <div className="bg-white/20 bg-opacity-50 h-8 p-1 rounded-xl md:w-1/3">
-        <input type="text" onKeyDown={(e)=>searchHandle(e)} className="focus:outline-0"/>
+    <div className="flex flex-col md:gap-10 items-center bg-radial-[at_50%_50%] from-white/20 to-black h-fit md:h-full w-full rounded-3xl text-white p-10">
+    <div className="bg-white/20 bg-opacity-50 h-8 p-1 rounded-md md:w-1/3">
+        <input type="text" onKeyDown={(e)=>searchHandle(e)} className="w-full focus:outline-0" placeholder={currentData.name}/>
     </div>
 
       <div className="flex flex-col md:flex-row w-full  mt-5">
         <div className="flex flex-col justify-center items-center w-full md:w-1/4">
-          <p className="flex font-extralight text-4xl">{currentData.name}</p>
-          <p className="flex font-extralight text-7xl mt-2">
+        <div className="flex items-center gap-2">
+           <FaLocationDot className="size-6"/>
+          <p className="font-extralight text-4xl">{currentData.name} ,{fullName}</p>
+        </div>
+         
+          <p className="flex font-extralight text-7xl mt-3">
             {currentData.main.temp}
             <sup className="text-2xl">°C</sup>
           </p>
-          <p className="text-2xl font-extralight">
+          <p className="text-2xl font-extralight mt-5">
             {currentData.weather[0].main}
           </p>
           <div className="flex gap-10 mt-10 font-extralight">
@@ -61,7 +73,7 @@ const Home = ({ currentData, dayForcast, setSearch }) => {
         <div className="flex flex-col justify-center items-center w-full md:w-1/4">
           {daily.map((item, index) => (
             <div key={index} className="flex items-center gap-3 my-2">
-              <p className="w-12 text-white text-sm">{getDayName(item.dt)}</p>
+              <p className="w-12 text-white text-md">{getDayName(item.dt)}</p>
 
               <img
                 src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
@@ -69,7 +81,7 @@ const Home = ({ currentData, dayForcast, setSearch }) => {
                 className="size-7"
               />
 
-              <p className="text-white text-sm">{item.main.temp}°C</p>
+              <p className="text-white text-md">{item.main.temp}°C</p>
             </div>
           ))}
         </div>

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./page/Home";
+import Loader from "./components/Loader";
 
 function App() {
   const [currentData, setCurrentData] = useState([]);
   const [search, setSearch] = useState(null);
   const [dayForcast, setdayForcast] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
   const getCurrentWeather = () => {
@@ -16,14 +18,14 @@ function App() {
         const lon = pos.coords.longitude;
         console.log("Location:", lat, lon);
 
-        // 1️⃣ Current weather
+        //  Current weather
         const currentRes = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
         );
         const currentData = await currentRes.json();
         setCurrentData(currentData);
 
-        // 2️⃣ Forecast
+        //  Forecast
         const forecastRes = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
@@ -43,20 +45,30 @@ function App() {
       }
     );
   };
-
+  const refreshComponent = () => setRefresh(!refresh);
   const searchByLocation = async () => {
     setIsLoading(true);
-    const data = await fetch(
+    try {
+      const data = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${API_KEY}&units=metric`
     ).then((res) => res.json());
 
     const forecastRes = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${data.coord.lat}&lon=${data.coord.lon}&units=metric&appid=${API_KEY}`
     );
-    setIsLoading(false);
-    const forecastData = await forecastRes.json();
-    setCurrentData(data);
-    setdayForcast(forecastData);
+
+     const forecastData = await forecastRes.json();
+      setCurrentData(data);
+      setdayForcast(forecastData);
+    } catch (error) {
+      
+      alert("City not found")
+      setSearch(null)
+    } finally {
+      setIsLoading(false)
+    }
+    
+    
     
   };
 
@@ -73,7 +85,7 @@ function App() {
   return (
     <div className="bg-black/80 h-screen w-screen py-3 px-2 md:py-20 md:px-15">
       {isLoading ? (
-        "Is Loading.............."
+         <Loader/>
       ) : (
         <Home
           currentData={currentData}
