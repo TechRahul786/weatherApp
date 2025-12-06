@@ -32,7 +32,7 @@ const fullName = getCountryName(currentData.sys.country);
   }
 
   return (
-    <div className="flex flex-col md:gap-10 items-center bg-radial-[at_50%_50%] from-white/20 to-black h-fit md:h-full w-full rounded-3xl text-white p-10">
+    <div className="flex flex-col md:gap-10 items-center bg-radial-[at_50%_50%] from-white/20 to-black h-full md:h-full w-full rounded-3xl text-white p-10">
     <div className="bg-white/20 bg-opacity-50 h-8 p-1 rounded-md md:w-1/3">
         <input type="text" onKeyDown={(e)=>searchHandle(e)} className="w-full focus:outline-0" placeholder={currentData.name}/>
     </div>
@@ -94,7 +94,7 @@ const fullName = getCountryName(currentData.sys.country);
         </div>
       </div>
 
-      <div className="flex justify-center w-full h-[100px] md:h-[300px] mt-5">
+      <div className="flex justify-center w-full h-[100px] md:h-[200px] mt-5">
         <Chart hourlyData={hourlyData}/>
       </div>
     </div>

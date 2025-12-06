@@ -7,7 +7,7 @@ console.log("hourly=>",hourlyData)
       <ResponsiveContainer>
         <LineChart data={hourlyData}>
           <XAxis dataKey="time" tick={{ fill: "#aaa" }} />
-           <YAxis width="auto" label={{ value: 'Temp', position: 'insideLeft', angle: -90 }} />
+           <YAxis width="auto" label={{ value: 'Temp', position: 'Center', angle: -90 ,fontSize:10 }} />
          
           
           <Line
