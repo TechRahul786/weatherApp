@@ -17,12 +17,12 @@ const Home = ({ currentData, dayForcast, setSearch }) => {
   }
 
   return (
-    <div className=" flex flex-col md:justify-center items-center bg-radial-[at_50%_50%] from-white/20 to-black h-full w-full rounded-3xl text-white p-10">
+    <div className=" flex flex-col md:justify-center items-center bg-radial-[at_50%_50%] from-white/20 to-black h-fit md:h-full w-full rounded-3xl text-white p-10">
     <div className="bg-black/20 bg-opacity-50 h-8 p-1 rounded-xl w-1/3">
         <input type="text" onKeyDown={(e)=>searchHandle(e)} className="focus:outline-0"/>
     </div>
 
-      <div className="flex flex-col md:flex-row w-full mt-5">
+      <div className="flex flex-col md:flex-row w-full  mt-5">
         <div className="flex flex-col justify-center items-center w-full md:w-1/4">
           <p className="flex font-extralight text-7xl">
             {currentData.main.temp}

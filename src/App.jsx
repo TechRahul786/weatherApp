@@ -9,11 +9,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  console.log("API KEY:", API_KEY);
-if (!API_KEY) {
-  alert("API key missing. Check environment variables.");
-}
-
   const getCurrentWeather = () => {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
