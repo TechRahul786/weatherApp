@@ -1,0 +1,87 @@
+import { useEffect, useState } from "react";
+import "./App.css";
+import Home from "./page/Home";
+
+function App() {
+  const [currentData, setCurrentData] = useState([]);
+  const [search, setSearch] = useState(null);
+  const [dayForcast, setdayForcast] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const getCurrentWeather = () => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        console.log("Location:", lat, lon);
+
+        // 1️⃣ Current weather
+        const currentRes = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+        );
+        const currentData = await currentRes.json();
+        setCurrentData(currentData);
+
+        // 2️⃣ Forecast
+        const forecastRes = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+        );
+        const forecastData = await forecastRes.json();
+
+        setdayForcast(forecastData);
+        setIsLoading(false);
+
+        console.log("Weather:", currentData);
+        console.log("Forecast:", forecastData);
+      },
+
+      (err) => {
+        alert("Please enable location on your mobile browser.");
+        console.log("Location error:", err);
+        setIsLoading(false)
+      }
+    );
+  };
+
+  const searchByLocation = async () => {
+    setIsLoading(true);
+    const data = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${API_KEY}&units=metric`
+    ).then((res) => res.json());
+
+    const forecastRes = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${data.coord.lat}&lon=${data.coord.lon}&units=metric&appid=${API_KEY}`
+    );
+    setIsLoading(false);
+    const forecastData = await forecastRes.json();
+    setCurrentData(data);
+    setdayForcast(forecastData);
+    
+  };
+
+  useEffect(() => {
+    if (search !== null) {
+      searchByLocation();
+    }
+  }, [search]);
+
+  useEffect(() => {
+    getCurrentWeather();
+  }, []);
+
+  return (
+    <div className="bg-black/80 h-screen w-screen py-20 px-15">
+      {isLoading ? (
+        "Is Loading.............."
+      ) : (
+        <Home
+          currentData={currentData}
+          dayForcast={dayForcast}
+          setSearch={setSearch}
+        />
+      )}
+    </div>
+  );
+}
+
+export default App;
