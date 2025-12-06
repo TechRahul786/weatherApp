@@ -71,7 +71,7 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-black/80 h-screen w-screen py-20 px-15">
+    <div className="bg-black/80 h-screen w-screen py-3 px-2 md:py-20 md:px-15">
       {isLoading ? (
         "Is Loading.............."
       ) : (
