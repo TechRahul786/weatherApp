@@ -40,7 +40,7 @@ const fullName = getCountryName(currentData.sys.country);
       <div className="flex flex-col md:flex-row w-full  mt-5">
         <div className="flex flex-col justify-center items-center w-full md:w-1/4">
         <div className="flex items-center gap-2">
-           <FaLocationDot className="size-6"/>
+           <FaLocationDot className="size-5"/>
           <p className="font-extralight text-xl">{currentData.name} ,{fullName}</p>
         </div>
          
