@@ -2,10 +2,17 @@ import { FaWind } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
 import rain from "../assets/heavyrain.png";
 import { FaLocationDot } from "react-icons/fa6";
+import Chart from "../components/Chart";
 const Home = ({ currentData, dayForcast, setSearch }) => {
   const daily = dayForcast.list.filter((item) =>
     item.dt_txt.includes("12:00:00")
   );
+
+  const hourlyData = dayForcast.list.slice(0,4).map(item => ({
+  time: item.dt_txt.slice(11, 16),     // "09:00"
+  temp: Math.round(item.main.temp)     // 12
+})); 
+
   const getDayName = (dt) => {
     const date = new Date(dt * 1000);
     return date.toLocaleDateString("en-US", { weekday: "short" });
@@ -34,7 +41,7 @@ const fullName = getCountryName(currentData.sys.country);
         <div className="flex flex-col justify-center items-center w-full md:w-1/4">
         <div className="flex items-center gap-2">
            <FaLocationDot className="size-6"/>
-          <p className="font-extralight text-4xl">{currentData.name} ,{fullName}</p>
+          <p className="font-extralight text-xl">{currentData.name} ,{fullName}</p>
         </div>
          
           <p className="flex font-extralight text-7xl mt-3">
@@ -87,7 +94,9 @@ const fullName = getCountryName(currentData.sys.country);
         </div>
       </div>
 
-      <div></div>
+      <div className="flex justify-center w-full h-[100px] md:h-[300px] mt-5">
+        <Chart hourlyData={hourlyData}/>
+      </div>
     </div>
   );
 };
